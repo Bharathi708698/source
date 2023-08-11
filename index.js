@@ -34,6 +34,43 @@ async function getCombinedData(req, res) {
   }
 }
 
+
+
+
+
+const axios = require('axios');
+
+function makeAPICall(attempt) {
+  axios.get('your_api_endpoint')
+    .then(response => {
+      if (response.data.success) {
+        console.log('API call successful:', response.data);
+      } else {
+        if (attempt < 3) {
+          console.log('API call failed. Retrying in 15 seconds...');
+          setTimeout(() => {
+            makeAPICall(attempt + 1);
+          }, 15000);
+        } else {
+          console.log('API call failed after multiple attempts:', response.data);
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Error making API call:', error);
+    });
+}
+
+// Start the API call with the first attempt
+makeAPICall(1);
+
+
+
+
+
+
+
+
 // Example Express.js setup to create an API endpoint for the dynamic JSON response
 const express = require('express');
 const app = express();
